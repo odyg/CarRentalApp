@@ -16,7 +16,7 @@ namespace CarRentalApp.Models // Change to your actual namespace
         [Required, StringLength(20)]
         public string Type { get; set; }
 
-        [Range(1450, 2050)]
+        [Range(4, 8)]
         public int Capacity { get; set; }
         
         [Range(1450, 2050)]

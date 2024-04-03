@@ -44,6 +44,6 @@ namespace CarRentalApp.Models
             get; set;
         }
         // Assuming you have a way to connect BorrowingModels to this reader
-        //public List<ReserveModel> RentedCars { get; set; } = new List<ReserveModel>();
+        //public List<ReservationModel> RentedCars { get; set; } = new List<ReservationModel>();
     }
 }

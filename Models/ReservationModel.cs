@@ -3,10 +3,10 @@
 
 namespace CarRentalApp.Models
 {
-    public class ReserveModel
+    public class ReservationModel
     {
         [Key]
-        public int RentId
+        public int ReservationId
         {
             get; set;
         }
