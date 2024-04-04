@@ -22,26 +22,26 @@ namespace CarRentalApp.Controllers
         [Route("/Reservation")]
         public async Task<IActionResult> GetAllReservations()
         {
-            var borrowings = await _context.Borrowings.ToListAsync();
-            return View(borrowings);
+            var reservations = await _context.Reservations.ToListAsync();
+            return View(reservations);
         }
 
         // GET: /Borrowing/{id}
         [HttpGet]
-        [Route("/Borrowing/{id}")]
-        public async Task<IActionResult> GetBorrowingById(int id)
+        [Route("/Reservation/{id}")]
+        public async Task<IActionResult> GetReservationById(int id)
         {
-            var borrowing = await _context.Borrowings.FindAsync(id);
-            if (borrowing != null)
+            var reservation = await _context.Reservations.FindAsync(id);
+            if (reservation != null)
             {
-                return View(borrowing);
+                return View(reservation);
             }
             return NotFound();
         }
 
         [HttpGet]
-        [Route("/Borrowing/Add")]
-        public IActionResult AddBorrowing()
+        [Route("/Reservation/Add")]
+        public IActionResult AddReservation()
         {
             //ViewData["BookId"] = new SelectList(_context.Books, "BookId", "Title");
             //ViewData["ReaderId"] = new SelectList(_context.Readers, "ReaderId", "Name");
@@ -49,35 +49,35 @@ namespace CarRentalApp.Controllers
         }
 
         [HttpPost]
-        [Route("/Borrowing/Add")]
-        public async Task<IActionResult> AddBorrowing(ReservationModel borrowing)
+        [Route("/Reservation/Add")]
+        public async Task<IActionResult> AddReservation(ReservationModel reservation)
         {
-            ModelState.Remove("Book");
-            ModelState.Remove("Reader");
+            ModelState.Remove("Car");
+            ModelState.Remove("Renter");
 
             if (ModelState.IsValid)
             {
                 // Retrieve the related CarModel and ReaderModel based on the IDs.
-                borrowing.Book = await _context.Books.FindAsync(borrowing.BookId);
-                borrowing.Reader = await _context.Readers.FindAsync(borrowing.ReaderId);
+                reservation.Car = await _context.Cars.FindAsync(reservation.CarId);
+                reservation.Renter = await _context.Renters.FindAsync(reservation.RenterId);
 
                 // Check if both the Book and Reader with the given IDs were found.
-                if (borrowing.Book == null || borrowing.Reader == null)
+                if (reservation.Car == null || reservation.Renter == null)
                 {
                     // Handle the case where the book or reader doesn't exist.
                     // Add error messages to ModelState or return a suitable response.
-                    ModelState.AddModelError("", "The book or reader does not exist.");
+                    ModelState.AddModelError("", "The car or renter does not exist.");
                     // Re-populate ViewData as it was in the GET method for AddBorrowing.
-                    ViewData["BookId"] = new SelectList(_context.Books, "BookId", "Title");
-                    ViewData["ReaderId"] = new SelectList(_context.Readers, "ReaderId", "Name");
-                    return View(borrowing);
+                    ViewData["CarId"] = new SelectList(_context.Cars, "CarId", "Model");
+                    ViewData["RenterId"] = new SelectList(_context.Renters, "RenterId", "FName");
+                    return View(reservation);
                 }
 
-                borrowing.Book.IsAvailable = "No";
+                reservation.Car.IsAvailable = "No";
                 // If both entities exist, then proceed to add the borrowing to the database.
-                await _context.Borrowings.AddAsync(borrowing);
+                await _context.Reservations.AddAsync(reservation);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("GetAllBorrowings");
+                return RedirectToAction("GetAllReservations");
             }
             if (!ModelState.IsValid)
             {
@@ -95,129 +95,133 @@ namespace CarRentalApp.Controllers
             }
 
             // If model state is not valid, return the view with the current model to show validation errors.
-            ViewData["BookId"] = new SelectList(_context.Books, "BookId", "Title", borrowing.BookId);
-            ViewData["ReaderId"] = new SelectList(_context.Readers, "ReaderId", "Name", borrowing.ReaderId);
-            return View(borrowing);
+            ViewData["CarId"] = new SelectList(_context.Cars, "CarId", "Model", reservation.CarId);
+            ViewData["RenterId"] = new SelectList(_context.Renters, "RenterId", "FName", reservation.RenterId);
+            return View(reservation);
         }
 
         [HttpGet]
-        [Route("/Borrowing/Update/{id}")]
-        public async Task<IActionResult> UpdateBorrowing(int id)
+        [Route("/Reservation/Update/{id}")]
+        public async Task<IActionResult> UpdateReservation(int id)
         {
-            var borrowing = await _context.Borrowings.FindAsync(id);
-            if (borrowing != null)
+            var reservation = await _context.Reservations.FindAsync(id);
+            if (reservation != null)
             {
-                return View(borrowing);
+                return View(reservation);
             }
             return NotFound();
         }
 
         [HttpPost]
-        [Route("/Borrowing/Update/{id}")]
-        public async Task<IActionResult> UpdateBorrowing(int id, ReservationModel updatedBorrowing)
+        [Route("/Reservation/Update/{id}")]
+        public async Task<IActionResult> UpdateBorrowing(int id, ReservationModel updatedReservation)
         {
-            ModelState.Remove("Book");
-            ModelState.Remove("Reader");
+            ModelState.Remove("Car");
+            ModelState.Remove("Renter");
 
             if (!ModelState.IsValid)
             {
-                return View(updatedBorrowing);
+                return View(updatedReservation);
             }
 
-            var borrowing = await _context.Borrowings.FindAsync(id);
-            if (borrowing == null)
+            var reservation = await _context.Reservations.FindAsync(id);
+            if (reservation == null)
             {
-                return NotFound($"No borrowing found with ID {id}.");
+                return NotFound($"No reservation found with ID {id}.");
             }
 
             // Assuming that ReservationModel includes BookId, ReaderId, BorrowDate, and ReturnDate
             // Update properties with values from updatedBorrowing
-            borrowing.BookId = updatedBorrowing.BookId;
-            borrowing.ReaderId = updatedBorrowing.ReaderId;
-            borrowing.BorrowDate = updatedBorrowing.BorrowDate;
-            borrowing.ReturnDate = updatedBorrowing.ReturnDate;
-
+            reservation.CarId = updatedReservation.CarId;
+            reservation.RenterId = updatedReservation.RenterId;
+            reservation.BorrowDate = updatedReservation.BorrowDate;
+            reservation.ReturnDate = updatedReservation.ReturnDate;
+            reservation.Status = updatedReservation.Status;
+            reservation.TaxRate = updatedReservation.TaxRate;
+            reservation.TotalAmount = updatedReservation.TotalAmount;
+            reservation.ReserveDate = updatedReservation.ReserveDate;
+         
             // If the borrowing is being returned, you might want to update the book's availability
-            if (updatedBorrowing.ReturnDate.HasValue)
+            if (updatedReservation.ReturnDate.HasValue)
             {
-                var book = await _context.Books.FindAsync(updatedBorrowing.BookId);
-                if (book != null)
+                var car = await _context.Cars.FindAsync(updatedReservation.CarId);
+                if (car != null)
                 {
                     // Assuming there's a property in CarModel to mark availability
-                    book.IsAvailable = "Yes"; // Or however you mark availability in your model
+                    car.IsAvailable = "Yes"; // Or however you mark availability in your model
                 }
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction("GetAllBorrowings");
+            return RedirectToAction("GetAllReservations");
         }
 
 
 
         [HttpPost]
-        [Route("/Borrowing/Delete/{id}")]
-        public async Task<IActionResult> DeleteBorrowing(int id)
+        [Route("/Reservation/Delete/{id}")]
+        public async Task<IActionResult> DeleteReservation(int id)
         {
-            var borrowing = await _context.Borrowings.FindAsync(id);
-            if (borrowing != null)
+            var reservation = await _context.Reservations.FindAsync(id);
+            if (reservation != null)
             {
-                _context.Borrowings.Remove(borrowing);
+                _context.Reservations.Remove(reservation);
                 await _context.SaveChangesAsync();
-                return RedirectToAction("GetAllBorrowings");
+                return RedirectToAction("GetAllReservations");
             }
             return NotFound();
         }
 
         [HttpGet]
-        [Route("/Borrowing/Overdue")]
-        public async Task<IActionResult> GetOverdueBorrowings()
+        [Route("/Reservation/Overdue")]
+        public async Task<IActionResult> GetOverdueReservations()
         {
             var cutoffDate = DateTime.Now.AddDays(-21); // Calculate the cutoff date
 
-            var overdueBorrowings = await _context.Borrowings
+            var overdueReservations = await _context.Reservations
                 .Where(b => b.ReturnDate == null && b.BorrowDate < cutoffDate)
                 .ToListAsync();
 
-            return View(overdueBorrowings);
+            return View(overdueReservations);
         }
 
 
         [HttpGet]
-        [Route("/Borrowing/ByReader")]
-        public async Task<IActionResult> GetBorrowingsByReader(int id)
+        [Route("/Reservation/ByRenter")]
+        public async Task<IActionResult> GetReservationsByRenter(int id)
         {
-            var borrowings = await _context.Borrowings
-                .Where(b => b.ReaderId == id)
+            var reservations = await _context.Reservations
+                .Where(b => b.RenterId == id)
                 .ToListAsync();
 
-            if (borrowings.Any())
+            if (reservations.Any())
             {
-                return View(borrowings);
+                return View(reservations);
             }
             return NotFound();
         }
 
         [HttpPost]
-        [Route("/Borrowing/Return/{id}")]
-        public async Task<IActionResult> ReturnBorrowing(int id)
+        [Route("/Reservation/Return/{id}")]
+        public async Task<IActionResult> ReturnReservation(int id)
         {
-            var borrowing = await _context.Borrowings.FindAsync(id);
-            if (borrowing == null)
+            var reservation = await _context.Reservations.FindAsync(id);
+            if (reservation == null)
             {
                 return NotFound($"No borrowing found with ID {id}.");
             }
 
-            borrowing.ReturnDate = DateTime.Now;
+            reservation.ReturnDate = DateTime.Now;
             // Update the book's availability
-            var book = await _context.Books.FindAsync(borrowing.BookId);
-            if (book != null)
+            var car = await _context.Cars.FindAsync(reservation.CarId);
+            if (car != null)
             {
                 // Assuming there's a property in CarModel to mark availability
-                book.IsAvailable = "Yes";
+                car.IsAvailable = "Yes";
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction("GetAllBorrowings");
+            return RedirectToAction("GetAllReservation");
         }
     }
 }

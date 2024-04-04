@@ -1,0 +1,49 @@
+﻿@model IEnumerable<CarRentalApp.Models.CarModel>
+
+@{
+    ViewData["Title"] = "Books by Type";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>CarId</th>
+            <th>Make</th>
+            <th>Model</th>
+            <th>Type</th>
+            <th>Capacity</th>
+            <th>Year</th>
+            <th>LicensePlate</th>
+            <th>DailyRate</th>
+            <th>IsAvailable</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var car in Model)
+        {
+            <tr>
+                <td>@car.CarId</td>
+                <td>@car.Make</td>
+                <td>@car.Model</td>
+                <td>@car.Type</td>
+                <td>@car.Capacity</td>
+                <td>@car.Year</td>
+                <td>@car.LicensePlate</td>
+                <td>@car.DailyRate</td>
+                <td>@car.IsAvailable</td>
+                <td>
+                    <!-- Update link -->
+                    <a asp-controller="Car" asp-action="UpdateCar" asp-route-id="@car.CarId" class="mb-1 btn btn-primary">Update</a>
+                    <!-- Delete form -->
+
+                    <form asp-controller="Car" asp-action="DeleteCar" asp-route-id="@car.CarId" method="post" onsubmit="return confirm('Are you sure you want to delete this car?');">
+                        <button type="submit" class="btn btn-danger mb-1">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

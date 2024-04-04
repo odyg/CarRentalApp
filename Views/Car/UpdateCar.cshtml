@@ -1,0 +1,47 @@
+﻿@model CarRentalApp.Models.CarModel
+
+@{
+    ViewData["Title"] = "Update Car";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="UpdateCar" method="post" asp-controller="Car">
+    <input type="hidden" asp-for="CarId" />
+    <div class="mb-1">
+        <label asp-for="Make"></label>
+        <input asp-for="Make" />
+    </div>
+    <div class="mb-1">
+        <label asp-for="Model"></label>
+        <input asp-for="Model" />
+    </div>
+    <div class="mb-1">
+        <label asp-for="Type"></label>
+        <input asp-for="Type" />
+    </div>
+    <div class="mb-1">
+        <label asp-for="Capacity"></label>
+        <input asp-for="Capacity" />
+    </div>
+    <div class="mb-1">
+        <label asp-for="Year"></label>
+        <input asp-for="Year" />
+    </div>
+    <div class="mb-1">
+        <label asp-for="LicensePlate"></label>
+        <input asp-for="LicensePlate" />
+    </div>
+    <div class="mb-1">
+        <label asp-for="DailyRate"></label>
+        <input asp-for="DailyRate" />
+    </div>
+    <div class="mb-1">
+        <label asp-for="IsAvailable"></label>
+        <input asp-for="IsAvailable" value="Yes" />
+    </div>
+    <div class="mb-1">
+        <input type="submit" value="Update Book" class="btn btn-success mt-1" />
+    </div>
+</form>
+
