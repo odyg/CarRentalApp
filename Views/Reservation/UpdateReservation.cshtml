@@ -1,0 +1,42 @@
+﻿@model CarRentalApp.Models.ReservationModel
+
+@{
+    ViewData["Title"] = "Update Reservation";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="UpdateReservation" method="post" asp-controller="Reservation">
+    <input type="hidden" asp-for="ReservationId" />
+    <div class="mb-1">
+        <label asp-for="CarId"></label>
+        <input asp-for="CarId" />
+    </div>
+    <div class="mb-1">
+        <label asp-for="RenterId"></label>
+        <input asp-for="RenterId" />
+    </div>
+    <div class="mb-1">
+        <label asp-for="ReserveDate"></label>
+        <input asp-for="ReserveDate" type="date" />
+    </div>
+    <div class="mb-1">
+        <label asp-for="BorrowDate"></label>
+        <input asp-for="BorrowDate" type="date" />
+    </div>
+    <div class="mb-1">
+        <label asp-for="ReturnDate"></label>
+        <input asp-for="ReturnDate" type="date" />
+    </div>
+    <div class="mb-1">
+        <label asp-for="Status"></label>
+        <input asp-for="Status" />
+    </div>
+    <div class="mb-1">
+        <label asp-for="Status"></label>
+        <input asp-for="Status"/>
+    </div>
+    <div class="mb-1">
+        <input type="submit" value="Update Reservation" class="btn btn-success mt-1" />
+    </div>
+</form>

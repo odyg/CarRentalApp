@@ -1,7 +1,7 @@
-﻿@model IEnumerable<CarRentalApp.Models.ReaderModel>
+﻿@model IEnumerable<CarRentalApp.Models.RenterModel>
 
 @{
-    ViewData["Title"] = "Readers by Zip Code";
+    ViewData["Title"] = "Renters by Zip Code";
 }
 
 <h2>@ViewData["Title"]</h2>
@@ -9,8 +9,11 @@
 <table class="table">
     <thead>
         <tr>
-            <th>ReaderId</th>
-            <th>Name</th>
+            <th>RenterId</th>
+            <th>FName</th>
+            <th>LName</th>
+            <th>Address</th>
+            <th>PhoneNumber</th>
             <th>Email</th>
             <th>ZipCode</th>
             <th>Actions</th>
@@ -20,18 +23,22 @@
         @foreach (var reader in Model)
         {
             <tr>
-                <td>@reader.ReaderId</td>
-                <td>@reader.Name</td>
+                <td>@reader.RenterId</td>
+                <td>@reader.FName</td>
+                <td>@reader.LName</td>
+                <td>@reader.Address</td>
+                <td>@reader.PhoneNumber</td>
                 <td>@reader.Email</td>
                 <td>@reader.ZipCode</td>
                 <td>
                     <!-- Update link -->
-                    <a asp-controller="Reader" asp-action="UpdateReader" asp-route-id="@reader.ReaderId" class="mb-1 btn btn-primary">Update</a>
+                    <a asp-controller="Renter" asp-action="UpdateRenter" asp-route-id="@reader.RenterId" class="mb-1 btn btn-primary">Update</a>
                     <!-- Delete form -->
-                
-                    <form asp-controller="Reader" asp-action="DeleteReader" asp-route-id="@reader.ReaderId" method="post" onsubmit="return confirm('Are you sure you want to delete this reader?');">
+
+                    <form asp-controller="Renter" asp-action="DeleteRenter" asp-route-id="@reader.RenterId" method="post" onsubmit="return confirm('Are you sure you want to delete this renter?');">
                         <button type="submit" class="btn btn-danger mb-1">Delete</button>
                     </form>
+                    <a asp-controller="Renter" asp-action="GetRenterById" asp-route-id="@reader.RenterId" class="mb-1 btn btn-primary">See Renter By ID</a>
                 </td>
             </tr>
         }

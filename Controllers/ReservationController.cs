@@ -57,7 +57,7 @@ namespace CarRentalApp.Controllers
 
             if (ModelState.IsValid)
             {
-                // Retrieve the related CarModel and ReaderModel based on the IDs.
+                // Retrieve the related CarModel and RenterModel based on the IDs.
                 reservation.Car = await _context.Cars.FindAsync(reservation.CarId);
                 reservation.Renter = await _context.Renters.FindAsync(reservation.RenterId);
 

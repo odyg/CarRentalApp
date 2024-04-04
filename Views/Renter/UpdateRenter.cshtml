@@ -1,16 +1,28 @@
-﻿@model CarRentalApp.Models.ReaderModel
+﻿@model CarRentalApp.Models.RenterModel
 
 @{
-    ViewData["Title"] = "Update Reader";
+    ViewData["Title"] = "Update Renter";
 }
 
 <h2>@ViewData["Title"]</h2>
 
-<form asp-action="UpdateReader" method="post" asp-controller="Reader">
-    <input type="hidden" asp-for="ReaderId" />
+<form asp-action="UpdateRenter" method="post" asp-controller="Renter">
+    <input type="hidden" asp-for="RenterId" />
     <div class="mb-1">
-        <label asp-for="Name"></label>
-        <input asp-for="Name" />
+        <label asp-for="FName"></label>
+        <input asp-for="FName" />
+    </div>
+    <div class="mb-1">
+        <label asp-for="LName"></label>
+        <input asp-for="LName" />
+    </div>
+    <div class="mb-1">
+        <label asp-for="Address"></label>
+        <input asp-for="Address" />
+    </div>
+    <div class="mb-1">
+        <label asp-for="PhoneNumber"></label>
+        <input asp-for="PhoneNumber" />
     </div>
     <div class="mb-1">
         <label asp-for="Email"></label>
@@ -22,6 +34,6 @@
     </div>
     <!-- Repeat for other fields -->
     <div>
-        <input type="submit" value="Update Reader" class="btn btn-success mt-1" />
+        <input type="submit" value="Update Renter" class="btn btn-success mt-1" />
     </div>
 </form>

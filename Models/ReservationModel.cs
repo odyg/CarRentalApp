@@ -46,14 +46,12 @@ namespace CarRentalApp.Models
         {
             get; set;
         }
-
-        [Required]
+        
         public double TaxRate
         {
             get; set;
         }
 
-        [Required]
         public double TotalAmount
         {
             get; set;

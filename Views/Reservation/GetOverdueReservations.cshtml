@@ -1,0 +1,53 @@
+﻿@model IEnumerable<CarRentalApp.Models.ReservationModel>
+
+@{
+    ViewData["Title"] = "Overdue Reservations";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ReservationId</th>
+            <th>CarId</th>
+            <th>RenterId</th>
+            <th>BorrowDate</th>
+            <th>ReturnDate</th>
+            <th>ReserveDate</th>
+            <th>Status</th>
+            <th>TaxRate</th>
+            <th>TotalAmount</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var reservation in Model)
+        {
+            <tr>
+                <td>@reservation.ReservationId</td>
+                <td>@reservation.CarId</td>
+                <td>@reservation.RenterId</td>
+                <td>@reservation.BorrowDate.ToShortDateString()</td>
+                <td>@reservation.ReturnDate?.ToShortDateString()</td>
+                <td>@reservation.ReserveDate.ToShortDateString()</td>
+                <td>@reservation.Status</td>
+                <td>@reservation.TaxRate</td>
+                <td>@reservation.TotalAmount</td>
+                <td>
+                    <a asp-controller="Reservation" asp-action="UpdateReservation" asp-route-id="@reservation.ReservationId" class="btn btn-primary mb-1">Update</a>
+
+                    <form asp-controller="Reservation" asp-action="DeleteReservation" asp-route-id="@reservation.ReservationId" method="post" onsubmit="return confirm('Are you sure you want to delete this reservation?');">
+                        <button type="submit" class="btn btn-danger mb-1">Delete</button>
+                    </form>
+
+                    <!-- Return Reservation Form  WE WILL HAVE TO CHANGE THE STATUS INSTEAD TO "Returned"  "Not Picked-up Yet -> Picked-up -> Returned-->
+                    <form asp-controller="Reservation" asp-action="ReturnReservation" asp-route-id="@reservation.ReservationId" method="post" onsubmit="return confirm('Are you sure you want to return this car?');">
+                        <button type="submit" class="btn btn-info mb-1">Return Car</button>
+                    </form>
+                </td>
+            </tr>
+        }
+
+    </tbody>
+</table>

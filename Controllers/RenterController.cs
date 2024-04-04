@@ -135,7 +135,7 @@ namespace CarRentalApp.Controllers
         public async Task<IActionResult> GetRenterByZipCode(string zipcode)
         {
             int zip = int.Parse(zipcode);
-            // Assuming ZipCode is a property in your ReaderModel
+            // Assuming ZipCode is a property in your RenterModel
             var renters = await _context.Renters.Where(r => r.ZipCode == zip).ToListAsync();
             if (renters.Any())
             {
