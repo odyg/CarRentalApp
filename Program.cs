@@ -1,10 +1,10 @@
-//using CarRentalApp.Data;
+using CarRentalApp.Data;
 //using CarRentalApp.Repositories;
-//using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
-//builder.Services.AddDbContext<LMSDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultString")));
+builder.Services.AddDbContext<CarRentalDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultString")));
 
 //builder.Services.AddScoped<BookRepository>();
 //builder.Services.AddScoped<ReaderRepository>();

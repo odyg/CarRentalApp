@@ -10,9 +10,9 @@ namespace CarRentalApp.Controllers
 {
     public class ReservationController : Controller
     {
-        private readonly LMSDbContext _context;
+        private readonly CarRentalDbContext _context;
 
-        public ReservationController(LMSDbContext context)
+        public ReservationController(CarRentalDbContext context)
         {
             _context = context;
         }
@@ -43,9 +43,52 @@ namespace CarRentalApp.Controllers
         [Route("/Reservation/Add")]
         public IActionResult AddReservation()
         {
-            //ViewData["BookId"] = new SelectList(_context.Books, "BookId", "Title");
-            //ViewData["ReaderId"] = new SelectList(_context.Readers, "ReaderId", "Name");
+            
             return View();
+        }
+
+        [HttpGet]
+        [Route("/Reservation/AddFromCarView/{id}")]
+        public async Task<IActionResult> AddReservationFromCarView(int id)
+        {
+            var car = await _context.Cars.FindAsync(id);
+            if (car == null)
+            {
+                return NotFound($"No car found with ID {id}.");
+            }
+
+            var reservation = new ReservationModel
+            {
+                CarId = car.CarId,
+            };
+
+            return View(reservation);
+        }
+
+        [HttpPost]
+        [Route("/Reservation/AddFromCarView/{id}")]
+        public async Task<IActionResult> AddReservationFromCarView(int id, ReservationModel reservation)
+        {
+            var car = await _context.Cars.FindAsync(id);
+            if (car == null)
+            {
+                return NotFound($"No car found with ID {id}.");
+            }
+
+            //var reservation = new ReservationModel
+            //{
+            //    CarId = car.CarId,
+            //};
+
+            var renter = await _context.Renters.FindAsync(reservation.RenterId);
+            reservation.Renter = renter;
+
+            var days = (reservation.ReturnDate - reservation.BorrowDate).Value.Days;
+            var dailyRate = car.DailyRate;
+            var taxRate = 0.1; // Hardcoded tax rate for now
+            reservation.TotalAmount = (dailyRate * days) + (dailyRate * days * taxRate);
+
+            return View("ConfirmReservation", reservation);
         }
 
         [HttpPost]
@@ -73,12 +116,54 @@ namespace CarRentalApp.Controllers
                     return View(reservation);
                 }
 
-                reservation.Car.IsAvailable = "No";
-                // If both entities exist, then proceed to add the borrowing to the database.
+                // Calculate the TotalAmount based on the days between BorrowDate and ReturnDate,
+                // DailyRate from the CarModel, and a hardcoded TaxRate.
+                var days = (reservation.ReturnDate - reservation.BorrowDate).Value.Days;
+                var dailyRate = reservation.Car.DailyRate;
+                var taxRate = 0.1; // Hardcoded tax rate for now
+                reservation.TotalAmount = (dailyRate * days) + (dailyRate * days * taxRate);
+
+                // Pass the reservation model to the view for confirmation.
+                return View("ConfirmReservation", reservation);
+
+                //reservation.Car.IsAvailable = "No";
+                //// If both entities exist, then proceed to add the borrowing to the database.
+                //await _context.Reservations.AddAsync(reservation);
+                //await _context.SaveChangesAsync();
+                //return RedirectToAction("GetAllReservations");
+            }
+
+            // If model state is not valid, return the view with the current model to show validation errors.
+            ViewData["CarId"] = new SelectList(_context.Cars, "CarId", "Model", reservation.CarId);
+            ViewData["RenterId"] = new SelectList(_context.Renters, "RenterId", "FName", reservation.RenterId);
+            return View(reservation);
+        }
+
+        [HttpPost]
+        [Route("/Reservation/Confirm")]
+        public async Task<IActionResult> ConfirmReservation(ReservationModel reservation)
+        {
+            ModelState.Remove("Car");
+            ModelState.Remove("Renter");
+
+            if (ModelState.IsValid)
+            {
+                // Add the reservation to the database
                 await _context.Reservations.AddAsync(reservation);
                 await _context.SaveChangesAsync();
+
+                // Update the car's availability
+                var car = await _context.Cars.FindAsync(reservation.CarId);
+                
+                    // Assuming there's a property in CarModel to mark availability
+                    car.IsAvailable = "No"; // Or however you mark availability in your model
+                    await _context.SaveChangesAsync();
+                
+
+                // Redirect to a success page or display a success message
                 return RedirectToAction("GetAllReservations");
             }
+
             if (!ModelState.IsValid)
             {
                 foreach (var entry in ModelState)
@@ -97,8 +182,9 @@ namespace CarRentalApp.Controllers
             // If model state is not valid, return the view with the current model to show validation errors.
             ViewData["CarId"] = new SelectList(_context.Cars, "CarId", "Model", reservation.CarId);
             ViewData["RenterId"] = new SelectList(_context.Renters, "RenterId", "FName", reservation.RenterId);
-            return View(reservation);
+            return View("ConfirmReservation", reservation);
         }
+
 
         [HttpGet]
         [Route("/Reservation/Update/{id}")]
@@ -208,7 +294,7 @@ namespace CarRentalApp.Controllers
             var reservation = await _context.Reservations.FindAsync(id);
             if (reservation == null)
             {
-                return NotFound($"No borrowing found with ID {id}.");
+                return NotFound($"No reservation found with ID {id}.");
             }
 
             reservation.ReturnDate = DateTime.Now;
@@ -221,7 +307,7 @@ namespace CarRentalApp.Controllers
             }
 
             await _context.SaveChangesAsync();
-            return RedirectToAction("GetAllReservation");
+            return RedirectToAction("GetAllReservations");
         }
     }
 }

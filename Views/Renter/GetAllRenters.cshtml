@@ -23,25 +23,24 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var reader in Model)
+        @foreach (var renter in Model)
         {
             <tr>
-                <td>@reader.RenterId</td>
-                <td>@reader.FName</td>
-                <td>@reader.LName</td>
-                <td>@reader.Address</td>
-                <td>@reader.PhoneNumber</td>
-                <td>@reader.Email</td>
-                <td>@reader.ZipCode</td>
+                <td>@renter.RenterId</td>
+                <td>@renter.FName</td>
+                <td>@renter.LName</td>
+                <td>@renter.Address</td>
+                <td>@renter.PhoneNumber</td>
+                <td>@renter.Email</td>
+                <td>@renter.ZipCode</td>
 				<td>
 					<!-- Update link -->
-					<a asp-controller="Renter" asp-action="UpdateRenter" asp-route-id="@reader.RenterId" class="mb-1 btn btn-primary">Update</a>
+					<a asp-controller="Renter" asp-action="UpdateRenter" asp-route-id="@renter.RenterId" class="mb-1 btn btn-primary">Update</a>
 					<!-- Delete form -->
 				
-					<form asp-controller="Renter" asp-action="DeleteRenter" asp-route-id="@reader.RenterId" method="post" onsubmit="return confirm('Are you sure you want to delete this renter?');">
+					<form asp-controller="Renter" asp-action="DeleteRenter" asp-route-id="@renter.RenterId" method="post" onsubmit="return confirm('Are you sure you want to delete this renter?');">
 						<button type="submit" class="btn btn-danger mb-1">Delete</button>
 					</form>
-					<a asp-controller="Renter" asp-action="GetRenterById" asp-route-id="@reader.RenterId" class="mb-1 btn btn-primary">See Renter By ID</a>
                 </td>
             </tr>
         }
@@ -51,7 +50,7 @@
 <!-- Add New Book button -->
 <a asp-controller="Renter" asp-action="AddRenter" class="btn btn-success mb-1">Add New Renter</a>
 
-<form asp-action="GetRentersByZipCode" method="get" asp-controller="Renter">
+<form asp-action="GetRenterByZipCode" method="get" asp-controller="Renter">
 	<div class="mb-1">
 		<label>Search by Zip Code</label>
 		<input type="text" name="zipcode" />

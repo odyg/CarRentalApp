@@ -8,9 +8,9 @@ namespace CarRentalApp.Controllers
 {
     public class CarController : Controller
     {
-        private readonly LMSDbContext _context;
+        private readonly CarRentalDbContext _context;
 
-        public CarController(LMSDbContext context)
+        public CarController(CarRentalDbContext context)
         {
             _context = context;
         }
@@ -20,7 +20,7 @@ namespace CarRentalApp.Controllers
         [Route("/Car")]
         public async Task<IActionResult> GetAllCars()
         {
-            var cars = await _context.Car.ToListAsync(); 
+            var cars = await _context.Cars.ToListAsync(); 
             return View(cars);
         }
 
@@ -139,6 +139,24 @@ namespace CarRentalApp.Controllers
                 return View("GetAllCars", cars); // Return books of a specific genre as a View
             }
             return NotFound(); // Or return a NotFound result
+        }
+
+        [HttpGet]
+        [Route("/Car/Available")]
+        public async Task<IActionResult> GetAvailableCars(DateTime startDate, DateTime endDate, string type)
+        {
+            // Get all reservations that overlap with the specified date range
+            var overlappingReservations = await _context.Reservations
+                .Where(r => (r.BorrowDate <= endDate && r.ReturnDate >= startDate))
+                .Select(r => r.CarId)
+                .ToListAsync();
+
+            // Get all cars that are not reserved within the specified date range and have the specified type
+            var availableCars = await _context.Cars
+                .Where(c => !overlappingReservations.Contains(c.CarId) && c.Type == type)
+                .ToListAsync();
+
+            return View("GetAllCars", availableCars);
         }
     }
 }
