@@ -1,20 +1,43 @@
-//using CarRentalApp.Data;
-//using CarRentalApp.Repositories;
-//using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
-var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddControllersWithViews();
-//builder.Services.AddDbContext<LMSDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultString")));
+public void ConfigureServices(IServiceCollection services)
+{
+    // Add DbContext for Identity
+    services.AddDbContext<ApplicationDbContext>(options =>
+        options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-//builder.Services.AddScoped<BookRepository>();
-//builder.Services.AddScoped<ReaderRepository>();
-//builder.Services.AddScoped<BorrowingRepository>();
+    // Add Identity
+    services.AddIdentity<ApplicationUser, IdentityRole>()
+        .AddEntityFrameworkStores<ApplicationDbContext>()
+        .AddDefaultTokenProviders();
 
-var app = builder.Build();
+    // Configure Identity Options
+    services.Configure<IdentityOptions>(options =>
+    {
+        // Password settings
+        options.Password.RequireDigit = true;
+        options.Password.RequiredLength = 8;
+        options.Password.RequireNonAlphanumeric = false;
+        options.Password.RequireUppercase = true;
+        options.Password.RequireLowercase = false;
 
+        // Lockout settings
+        options.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(30);
+        options.Lockout.MaxFailedAccessAttempts = 5;
 
-app.MapControllers();
+        // User settings
+        options.User.RequireUniqueEmail = true;
+    });
 
-//app.MapGet("/", () => "Hello World!");
-
-app.Run();
+    // Configure Cookie settings
+    services.ConfigureApplicationCookie(options =>
+    {
+        options.Cookie.HttpOnly = true;
+        options.ExpireTimeSpan = TimeSpan.FromDays(1);
+        options.LoginPath = "/Account/Login"; // Set the login page
+        options.AccessDeniedPath = "/Account/AccessDenied"; // Set the access denied page
+        options.SlidingExpiration = true;
+    });
+}

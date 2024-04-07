@@ -4,10 +4,12 @@ using CarRentalApp.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace CarRentalApp.Controllers
 {
+    [Authorize]
     public class ReservationController : Controller
     {
         private readonly LMSDbContext _context;

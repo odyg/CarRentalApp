@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CarRentalApp.Controllers
 {
+    [Authorize]
     public class RenterController : Controller
     {
         private readonly LMSDbContext _context;
