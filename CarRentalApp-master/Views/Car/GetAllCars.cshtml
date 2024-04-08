@@ -1,0 +1,107 @@
+﻿@model IEnumerable<CarRentalApp.Models.CarModel>
+
+@{
+    // var genre = Request.Form["genre"];
+    // var url = $"/Book/Genre/{genre}";
+    ViewData["Title"] = "All Cars";
+    // default values this will change baased on user input
+}
+
+<h2>@ViewData["Title"]</h2>
+<h4>List of all cars:</h4>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>CarId</th>
+            <th>Make</th>
+            <th>Model</th>
+            <th>Type</th>
+            <th>Capacity</th>
+            <th>Year</th>
+            <th>LicensePlate</th>
+            <th>DailyRate</th>
+            <th>IsAvailable</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var car in Model)
+        {
+            <tr>
+                <td>@car.CarId</td>
+                <td>@car.Make</td>
+                <td>@car.Model</td>
+                <td>@car.Type</td>
+                <td>@car.Capacity</td>
+                <td>@car.Year</td>
+                <td>@car.LicensePlate</td>
+                <td>@car.DailyRate</td>
+                <td>@car.IsAvailable</td>
+                <td>
+                    <!-- Update link -->
+                    <a asp-controller="Car" asp-action="UpdateCar" asp-route-id="@car.CarId" class="mb-1 btn btn-primary">Update</a>
+                    <!-- Delete form -->
+
+                    <form asp-controller="Car" asp-action="DeleteCar" asp-route-id="@car.CarId" method="post" onsubmit="return confirm('Are you sure you want to delete this car?');">
+                        <button type="submit" class="btn btn-danger mb-1">Delete</button>
+                    </form>
+                    <a asp-controller="Reservation" asp-action="AddReservationFromCarView" asp-route-id="@car.CarId" method="post" class="mb-1 btn btn-primary">Reserve</a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Add New Book button -->
+<a asp-controller="Car" asp-action="AddCar" class="btn btn-success mb-1">Add New Car</a>
+
+
+<form asp-action="GetCarsByType" method="get" asp-controller="Car" class="mb-1">
+    <div>
+        <label>Search by Type</label>
+        <input type="text" name="type" />
+        <input type="submit" value="Search" />
+    </div>
+</form>
+<form asp-action="GetCarById" method="get" asp-controller="Car" class="mb-1">
+    <div>
+        <label>Search by Car ID</label>
+        <input type="text" name="id" />
+        <input type="submit" value="Search" />
+    </div>
+</form>
+<form asp-action="GetAvailableCars" method="get" asp-controller="Car" class="mb-1">
+    <div>
+        <label>Search by Dates and Car Type</label>
+        <input type="date" name="startDate" />
+        <input type="date" name="endDate" />
+        <input type="text" name="type" placeholder="car,suv,truck..." />
+        <input type="submit" value="Search" />
+    </div>
+</form>
+
+
+@if (TempData["Warning"] != null)
+{
+    <div class="alert alert-warning">
+        @TempData["Warning"]
+    </div>
+}
+
+@if (TempData["Error"] != null)
+{
+    <div class="alert alert-warning">
+        @TempData["Error"]
+    </div>
+}
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+<!-- The rest of your HTML goes here -->

@@ -1,0 +1,49 @@
+﻿@model CarRentalApp.Models.ReservationModel
+
+@{
+    ViewData["Title"] = "Add Reservation";
+}
+
+
+<h2>@ViewData["Title"]</h2>
+
+<form asp-action="AddReservationFromCarView" method="post" asp-controller="Reservation">
+    <div class="mb-1">
+        <label asp-for="CarId"></label>
+        <input asp-for="CarId" />
+    </div>
+    <div class="mb-1">
+        <label asp-for="RenterId"></label>
+        <input asp-for="RenterId" />
+    </div>
+    <div class="mb-1">
+        <label asp-for="ReserveDate"></label>
+        <input asp-for="ReserveDate" value="@DateTime.Today.ToString("yyyy-MM-dd")" />
+    </div>
+    <div class="mb-1">
+        <label asp-for="BorrowDate"></label>
+        <input asp-for="BorrowDate" type="date" />
+    </div>
+    <div class="mb-1">
+		<label asp-for="ReturnDate"></label>
+		<input asp-for="ReturnDate" type="date" />
+    </div>
+    <div class="mb-1">
+        <label asp-for="Status"></label>
+        <input asp-for="Status" value="Not Picked-Up Yet"/>
+    </div>
+    
+    <!-- Repeat for other fields -->
+    <div class="mb-1">
+        <input type="submit" value="Preview Reservation" class="btn btn-success mb-1" />
+    </div>
+</form>
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="alert alert-danger">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(modelState => modelState.Errors))
+        {
+            <p>@error.ErrorMessage</p>
+        }
+    </div>
+}

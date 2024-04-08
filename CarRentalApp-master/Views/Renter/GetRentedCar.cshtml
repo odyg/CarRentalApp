@@ -1,0 +1,31 @@
+﻿@model List<ReservationModel>
+
+@{
+    ViewData["Title"] = "Borrowed Books";
+}
+<!-- THIS WILL HAVE TO CHANGE, THIS CAME FROM ASSIGNMENT 4 WHERE WE HAD TO SHOW THE RENTER'S BORROWED BOOKS  -->
+<h2>Borrowed Books</h2>
+
+@if (!Model.Any())
+{
+    <p>This reader has no borrowed books.</p>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <!--
+                                <th>Borrowing ID</th>
+                <th>Book ID</th>
+                <th>Borrow Date</th>
+                <th>Return Date</th> -->
+            </tr>
+        </thead>
+        <tbody>
+            <!--
+ 
+            -->
+        </tbody>
+    </table>
+}

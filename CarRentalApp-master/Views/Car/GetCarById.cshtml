@@ -1,0 +1,46 @@
+﻿@model CarRentalApp.Models.CarModel
+
+@{
+    ViewData["Title"] = "Car by ID";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>CarId</th>
+            <th>Make</th>
+            <th>Model</th>
+            <th>Type</th>
+            <th>Capacity</th>
+            <th>Year</th>
+            <th>LicensePlate</th>
+            <th>DailyRate</th>
+            <th>IsAvailable</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@Model.CarId</td>
+			<td>@Model.Make</td>
+            <td>@Model.Model</td>
+            <td>@Model.Type</td>
+            <td>@Model.Capacity</td>
+            <td>@Model.Year</td>
+            <td>@Model.LicensePlate</td>
+            <td>@Model.DailyRate</td>
+            <td>@Model.IsAvailable</td>
+            <td>
+                <!-- Update link -->
+                <a asp-controller="Car" asp-action="UpdateCar" asp-route-id="@Model.CarId" class="mb-1 btn btn-primary">Update</a>
+                <!-- Delete form -->
+                <form asp-controller="Car" asp-action="DeleteCar" asp-route-id="@Model.CarId" method="post" onsubmit="return confirm('Are you sure you want to delete this car?');">
+                    <button type="submit" class="btn btn-danger mb-1">Delete</button>
+                </form>
+            </td>
+        </tr>
+    </tbody>
+
+</table>
