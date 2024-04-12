@@ -37,8 +37,9 @@
                 <td>
                     <!-- Update link -->
                     <a asp-controller="Car" asp-action="UpdateCar" asp-route-id="@car.CarId" class="mb-1 btn btn-primary">Update</a>
+                    <!-- Reserve link -->
+                    <a asp-controller="Reservation" asp-action="AddReservation" asp-route-carId="@car.CarId" class="mb-1 btn btn-success">Reserve</a>
                     <!-- Delete form -->
-
                     <form asp-controller="Car" asp-action="DeleteCar" asp-route-id="@car.CarId" method="post" onsubmit="return confirm('Are you sure you want to delete this car?');">
                         <button type="submit" class="btn btn-danger mb-1">Delete</button>
                     </form>

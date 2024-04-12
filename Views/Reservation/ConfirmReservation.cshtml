@@ -1,0 +1,45 @@
+﻿@model CarRentalApp.Models.ReservationModel
+
+<h1>Confirm Reservation</h1>
+
+<table>
+    <tr>
+        <th>Car</th>
+        <td>@Model.Car.Model</td>
+    </tr>
+    <tr>
+        <th>Renter</th>
+        <td>@Model.Renter.FName @Model.Renter.LName</td>
+    </tr>
+    <tr>
+        <th>Reserve Date</th>
+        <td>@Model.ReserveDate.ToShortDateString()</td>
+    </tr>
+    <tr>
+        <th>Borrow Date</th>
+        <td>@Model.BorrowDate.ToShortDateString()</td>
+    </tr>
+    <tr>
+        <th>Return Date</th>
+        <td>@Model.ReturnDate?.ToShortDateString()</td>
+    </tr>
+    <tr>
+        <th>Total Amount</th>
+        <td>@Model.TotalAmount.ToString("C")</td>
+    </tr>
+</table>
+
+<form method="post" asp-action="ConfirmReservation" asp-controller="Reservation">
+    <input type="hidden" asp-for="CarId" />
+    <input type="hidden" asp-for="RenterId" />
+    <input type="hidden" asp-for="ReserveDate" />
+    <input type="hidden" asp-for="BorrowDate" />
+    <input type="hidden" asp-for="ReturnDate" />
+    <input type="hidden" asp-for="TaxRate" value="5.0" />
+    <input type="hidden" asp-for="TotalAmount" />
+    <input type="hidden" asp-for="Status" value="Reserved" />
+    <input type="submit" value="Confirm Reservation" class="btn btn-success mb-1" />
+</form>
+
+
+

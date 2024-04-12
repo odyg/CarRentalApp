@@ -1,15 +1,10 @@
-using CarRentalApp;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
+//using CarRentalApp.Data;
+//using CarRentalApp.Repositories;
+//using Microsoft.EntityFrameworkCore;
 
-namespace CarRentalApp
-{
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            CreateHostBuilder(args).Build().Run();
-        }
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllersWithViews();
+//builder.Services.AddDbContext<LMSDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultString")));
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
