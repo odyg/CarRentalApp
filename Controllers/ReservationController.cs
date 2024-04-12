@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace CarRentalApp.Controllers
 {
-    [Authorize]
+
     public class ReservationController : Controller
     {
         private readonly CarRentalDbContext _context;
