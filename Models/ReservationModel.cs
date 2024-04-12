@@ -40,13 +40,13 @@ namespace CarRentalApp.Models
         {
             get; set;
         } // Nullable for cases when the book hasn't been returned yet
-        
+
         [Required]
         public string Status
         {
             get; set;
         }
-        
+
         public double TaxRate
         {
             get; set;
@@ -68,4 +68,3 @@ namespace CarRentalApp.Models
         }
     }
 }
-

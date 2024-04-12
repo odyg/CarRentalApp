@@ -1,0 +1,30 @@
+﻿@model CarRentalApp.Models.LoginModel
+
+@{
+    ViewData["Title"] = "Login Page";
+    ViewData["Title2"] = "Enter Login Credentials Below";
+}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <h2>@ViewData["Title"]</h2>
+            <p>@ViewData["Title2"]</p>
+
+            <div class="mt-4">
+                <form asp-action="Authenticate" method="post">
+                    <div class="form-group mb-3">
+                        <label asp-for="Username">Username:</label>
+                        <input asp-for="Username" />
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Password">Password:</label>
+                        <input asp-for="Password" type="password" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <input type="submit" class="btn btn-primary" value="Login" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

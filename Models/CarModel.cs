@@ -18,7 +18,7 @@ namespace CarRentalApp.Models // Change to your actual namespace
 
         [Range(4, 8)]
         public int Capacity { get; set; }
-        
+
         [Range(1450, 2050)]
         public int Year
         {

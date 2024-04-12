@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CarRentalApp.Controllers
 {
+
     public class CarController : Controller
     {
         private readonly CarRentalDbContext _context;

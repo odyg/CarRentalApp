@@ -1,20 +1,21 @@
-using CarRentalApp.Data;
-//using CarRentalApp.Repositories;
-using Microsoft.EntityFrameworkCore;
+using CarRentalApp;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 
-var builder = WebApplication.CreateBuilder(args);
-builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<CarRentalDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultString")));
+namespace CarRentalApp
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            CreateHostBuilder(args).Build().Run();
+        }
 
-//builder.Services.AddScoped<BookRepository>();
-//builder.Services.AddScoped<ReaderRepository>();
-//builder.Services.AddScoped<BorrowingRepository>();
-
-var app = builder.Build();
-
-
-app.MapControllers();
-
-//app.MapGet("/", () => "Hello World!");
-
-app.Run();
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
+    }
+}
