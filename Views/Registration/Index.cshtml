@@ -1,0 +1,34 @@
+﻿@model CarRentalApp.Models.RegistrationModel
+
+@{
+    ViewData["Title"] = "Registration Page";
+    ViewData["Title2"] = "Enter your details below to register with The Car Rental App.";
+}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6 text-center">
+            <h2>@ViewData["Title"]</h2>
+            <p>@ViewData["Title2"]</p>
+            <div class="mt-4">
+                <form asp-action="Register" method="post">
+                    <div class="form-group mb-3">
+                        <label asp-for="Username">Username:</label>
+                        <input asp-for="Username" />
+                        <span asp-validation-for="Username" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Password">Password:</label>
+                        <input asp-for="Password" type="password" />
+                        <span asp-validation-for="Password" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Email">Email:</label>
+                        <input asp-for="Email" />
+                        <span asp-validation-for="Email" class="text-danger"></span>
+                    </div>
+                    <input type="submit" class="btn btn-primary" value="Register" />
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

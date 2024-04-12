@@ -5,12 +5,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CarRentalApp.Controllers
 {
-    [Authorize]
     public class RenterController : Controller
     {
-        private readonly LMSDbContext _context;
+        private readonly CarRentalDbContext _context;
 
-        public RenterController(LMSDbContext context)
+        public RenterController(CarRentalDbContext context)
         {
             _context = context;
         }
@@ -90,7 +89,7 @@ namespace CarRentalApp.Controllers
             }
 
             // Manually update the properties
-            renterInDb.Name = updatedRenter.FName;
+            renterInDb.FName = updatedRenter.FName;
             renterInDb.LName = updatedRenter.LName;
             renterInDb.Address = updatedRenter.Address;
             renterInDb.PhoneNumber = updatedRenter.PhoneNumber;
@@ -140,7 +139,7 @@ namespace CarRentalApp.Controllers
             var renters = await _context.Renters.Where(r => r.ZipCode == zip).ToListAsync();
             if (renters.Any())
             {
-                return View("GetReaderByZipcode", renters); // Reuse the GetAllReaders view
+                return View("GetRenterByZipcode", renters); // Reuse the GetAllReaders view
             }
             return NotFound();
         }
