@@ -5,6 +5,17 @@ namespace CarRentalApp.Controllers
 {
     public class LoginController : Controller
     {
+        //LoginPage
+        public ActionResult LoggedIn()
+        {
+            return View();
+        }
+
+        public ActionResult LoggedOut()
+        {
+            return View();
+        }
+
         // GET: Login
         [Route("/Login")]
         public ActionResult Index()
@@ -23,13 +34,13 @@ namespace CarRentalApp.Controllers
                 if (loginModel.Username == "admin" && loginModel.Password == "password")
                 {
                     // Authentication successful, redirect to dashboard or desired page
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("LoggedIn");
                 }
                 else
                 {
                     // Authentication failed, display error message
                     ViewBag.ErrorMessage = "Invalid username or password.";
-                    return View("Login", loginModel);
+                    return View("Index", loginModel);
                 }
             }
             else

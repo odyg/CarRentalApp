@@ -23,7 +23,7 @@ namespace YourApplication.Controllers
                 // You can write your code here to save registrationModel to the database
 
                 // After successful registration, redirect to login page or dashboard
-                return RedirectToAction("Login", "Login");
+                return RedirectToAction("Index", "Login");
             }
             else
             {
