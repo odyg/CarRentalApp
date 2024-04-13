@@ -1,10 +1,31 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using CarRentalApp.Models;
+using CarRentalApp.Data;
+using System.Linq;
 
 namespace CarRentalApp.Controllers
 {
     public class LoginController : Controller
     {
+        private readonly CarRentalDbContext _context;
+
+        public LoginController(CarRentalDbContext context)
+        {
+            _context = context;
+        }
+
+        // GET: Login
+        [Route("/Login")]
+        public ActionResult Index()
+        {
+            // Retrieve list of users from the database
+            var users = _context.Users.ToList();
+
+            // Pass the list of users to the view
+            ViewBag.Users = users;
+
+            return View();
+        }
         //LoginPage
         public ActionResult LoggedIn()
         {
@@ -16,37 +37,31 @@ namespace CarRentalApp.Controllers
             return View();
         }
 
-        // GET: Login
-        [Route("/Login")]
-        public ActionResult Index()
-        {
-            return View();
-        }
-
         [HttpPost]
         [Route("/Login")]
         public ActionResult Authenticate(LoginModel loginModel)
         {
             if (ModelState.IsValid)
             {
-                // Here you can perform authentication logic
-                // For simplicity, let's assume authentication is successful if username is "admin" and password is "password"
-                if (loginModel.Username == "admin" && loginModel.Password == "password")
+                // Perform authentication logic by querying the Users table
+                var user = _context.Users.FirstOrDefault(u => u.Username == loginModel.Username && u.Password == loginModel.Password);
+
+                if (user != null)
                 {
-                    // Authentication successful, redirect to dashboard or desired page
+                    // Authentication successful, redirect to loggedIn action
                     return RedirectToAction("LoggedIn");
                 }
                 else
                 {
                     // Authentication failed, display error message
                     ViewBag.ErrorMessage = "Invalid username or password.";
-                    return View("Index", loginModel);
+                    return RedirectToAction("Index");
                 }
             }
             else
             {
                 // Model validation failed, return to login page with error messages
-                return View("Login", loginModel);
+                return RedirectToAction("Index");
             }
         }
     }
