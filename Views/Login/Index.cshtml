@@ -10,26 +10,7 @@
         <div class="col-md-6 text-center">
             <h2>@ViewData["Title"]</h2>
             <p>@ViewData["Title2"]</p>
-
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>UserName</th>
-                        <th>Password</th>
-                        <th>Email</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var user in ViewBag.Users)
-                    {
-                        <tr>
-                            <td>@user.Username</td>
-                            <td>@user.Password</td>
-                            <td>@user.Email</td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
+            
             <div class="mt-4">
                 <form asp-action="Authenticate" method="post">
                     <div class="form-group mb-3">
@@ -45,6 +26,25 @@
                     <input type="submit" class="btn btn-primary" value="Login" />
                 </form>
             </div>
+            <br />
+            <p>List of current users</p>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>UserName</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var user in ViewBag.Users)
+                    {
+                        <tr>
+                            <td>@user.Username</td>
+                            <td>@user.Email</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
