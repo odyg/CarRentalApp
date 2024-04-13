@@ -32,7 +32,7 @@ namespace CarRentalApp.Models
             get; set;
         }
 
-        [Required, EmailAddress]
+        [Required, StringLength(100)]
         public string Email
         {
             get; set;

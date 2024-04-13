@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CarRentalApp.Migrations
 {
     [DbContext(typeof(CarRentalDbContext))]
-    [Migration("20240412104027_VRM24")]
-    partial class VRM24
+    [Migration("20240413135253_VRMS1")]
+    partial class VRMS1
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -449,7 +449,8 @@ namespace CarRentalApp.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("FName")
                         .IsRequired()
@@ -816,6 +817,26 @@ namespace CarRentalApp.Migrations
                     b.HasIndex("RenterId");
 
                     b.ToTable("Reservations");
+                });
+
+            modelBuilder.Entity("CarRentalApp.Models.UserModel", b =>
+                {
+                    b.Property<string>("Username")
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
+
+                    b.HasKey("Username");
+
+                    b.ToTable("Users", (string)null);
                 });
 
             modelBuilder.Entity("CarRentalApp.Models.ReservationModel", b =>
