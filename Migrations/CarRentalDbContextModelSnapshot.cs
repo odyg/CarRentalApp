@@ -446,7 +446,8 @@ namespace CarRentalApp.Migrations
 
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("FName")
                         .IsRequired()
